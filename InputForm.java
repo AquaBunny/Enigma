@@ -3,7 +3,7 @@ package com.company;
 import javax.swing.*;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.util.Arrays;
+import java.awt.event.KeyAdapter;
 
 public class InputForm extends JFrame{
     private JPanel MainPanel;
@@ -11,6 +11,7 @@ public class InputForm extends JFrame{
     private JButton encodeButton;
     private JButton submitButton;
     private JLabel TopLabel;
+    private JTextField shiftyCount;
     private boolean encode = true;
 
     InputForm() {
@@ -26,7 +27,7 @@ public class InputForm extends JFrame{
         submitButton.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                encode(input.getText());
+                encode(input.getText(), shiftyCount.getText());
             }
         });
         //Swaps encode and decode
@@ -35,6 +36,8 @@ public class InputForm extends JFrame{
             public void actionPerformed(ActionEvent e) {
                 swapEncodeDecode();
             }
+        });
+        input.addKeyListener(new KeyAdapter() {
         });
     }
 
@@ -55,26 +58,35 @@ public class InputForm extends JFrame{
         this.pack();
     }
 
-    private void encode(String inputLine) {
-        String outputString;
+    private void encode(String inputLine, String shiftAmount) {
+        int shifty;
+        try {
+            shifty = Integer.parseInt(shiftAmount);
+        } catch (Exception e) {
+            shifty = 1;
+        }
         inputLine = inputLine.toUpperCase();
         char[] working = inputLine.toCharArray();
         if(encode) {
             for(int i = 0; i < working.length; ++i) {
                 if(working[i] == ' ') {
 
-                } else if(working[i] == 90) {
-                    working[i] = 65;
+                } else if(working[i] + shifty > 90) {
+                    int temp = 90-working[i];
+                    working[i] = (char) (65+(shifty-temp)-1);
                 } else {
-                    working[i] += 1;
+                    working[i] += shifty;
                 }
             }
         } else {
             for(int i = 0; i < working.length; ++i) {
-                if(working[i] == 65) {
-                    working[i] = 90;
+                if(working[i] == ' ') {
+
+                }else if(working[i] - shifty < 65) {
+                    int temp = working[i] - 65;
+                    working[i] =(char) (90 - (shifty-temp)+1);
                 } else {
-                    working[i] -= 1;
+                    working[i] -= shifty;
                 }
             }
         }
