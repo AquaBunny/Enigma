@@ -10,6 +10,7 @@ public class InputForm extends JFrame{
     private JTextField input;
     private JButton encodeButton;
     private JButton submitButton;
+    private JLabel TopLabel;
     private boolean encode = true;
 
     InputForm() {
@@ -40,12 +41,15 @@ public class InputForm extends JFrame{
     private void swapEncodeDecode() {
         if(encode && encodeButton.getText().equals("Decode")) {
             encodeButton.setText("Encode");
+            TopLabel.setText("To encode:");
             encode = true;
         } else if(encodeButton.getText().equals("Encode")) {
             encodeButton.setText("Decode");
+            TopLabel.setText("To decode:");
             encode = false;
         } else {
             encodeButton.setText("Encode");
+            TopLabel.setText("To encode:");
             encode = true;
         }
         this.pack();
